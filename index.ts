@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import { Sequelize, DataTypes, Model } from "sequelize";
 import cors from "cors"; // Importando o CORS
+import path from "path";
 
 const app = express();
 const PORT = 3000;
@@ -114,6 +115,10 @@ app.get("/data", async (_req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ error: "Error retrieving data" });
   }
+});
+
+app.get("/", async (_req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
