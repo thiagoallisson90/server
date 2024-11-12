@@ -6,11 +6,7 @@ import cors from "cors"; // Importando o CORS
 const app = express();
 const PORT = 3000;
 
-app.use(
-  cors({
-    origin: "https://thiagoallisson90.github.io/Front/",
-  })
-);
+app.use(cors());
 
 // Configuração do Sequelize para SQLite
 const sequelize = new Sequelize({
@@ -113,6 +109,11 @@ app.post("/data", async (req: Request, res: Response) => {
 app.get("/data", async (_req: Request, res: Response) => {
   try {
     const data = await SensorData.findAll();
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: "Error retrieving data" });
