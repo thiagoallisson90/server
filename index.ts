@@ -6,7 +6,11 @@ import cors from "cors"; // Importando o CORS
 const app = express();
 const PORT = 3000;
 
-app.use(cors()); // Middleware CORS
+app.use(
+  cors({
+    origin: "https://thiagoallisson90.github.io/Front/",
+  })
+);
 
 // Configuração do Sequelize para SQLite
 const sequelize = new Sequelize({
