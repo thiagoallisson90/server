@@ -1,13 +1,17 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import { Sequelize, DataTypes, Model } from "sequelize";
 import cors from "cors"; // Importando o CORS
-import path from "path";
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 // Configuração do Sequelize para SQLite
 const sequelize = new Sequelize({
@@ -109,16 +113,11 @@ app.post("/data", async (req: Request, res: Response) => {
 // Endpoint para recuperar dados via GET
 app.get("/data", async (_req: Request, res: Response) => {
   try {
-    res.header("Access-Control-Allow-Origin", "*");
     const data = await SensorData.findAll();
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: "Error retrieving data" });
   }
-});
-
-app.get("/", async (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
