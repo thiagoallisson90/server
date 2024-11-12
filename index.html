@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consumo de API com Bootstrap</title>
+
+    <!-- Link do Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      .container {
+        margin-top: 50px;
+      }
+
+      .card {
+        margin-bottom: 20px;
+      }
+
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+
+      .card-text {
+        margin-bottom: 0.5rem;
+      }
+
+      .timestamp {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="text-center">Dados dos Sensores</h1>
+      <div class="row" id="data-container">
+        <!-- Os dados da API serão injetados aqui -->
+      </div>
+    </div>
+
+    <!-- Script do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Script para consumir a API -->
+    <script>
+      // Função para carregar os dados da API
+      function carregarDados() {
+        fetch("https://server-06z2.onrender.com/data")
+          .then((response) => response.json())
+          .then((data) => {
+            // A referência ao container onde os dados serão exibidos
+            const container = document.getElementById("data-container");
+
+            // Limpa o conteúdo anterior
+            container.innerHTML = "";
+
+            // Verifica se há dados
+            if (data && Array.isArray(data) && data.length > 0) {
+              // Itera sobre os dados e cria os cards para cada item
+              data.forEach((item) => {
+                const card = document.createElement("div");
+                card.classList.add("col-md-4");
+
+                card.innerHTML = `
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Dispositivo ${
+                                          item.device_id
+                                        }</h5>
+                                        <p class="card-text"><strong>Temperatura:</strong> ${
+                                          item.temperature
+                                        }°C</p>
+                                        <p class="card-text"><strong>Umidade:</strong> ${
+                                          item.humidity
+                                        }%</p>
+                                        <p class="card-text"><strong>Luminosidade:</strong> ${
+                                          item.luminosity
+                                        } lux</p>
+                                        <p class="card-text"><strong>PDR:</strong> ${
+                                          item.pdr
+                                        }</p>
+                                        <p class="card-text"><strong>RSSI:</strong> ${
+                                          item.rssi
+                                        } dBm</p>
+                                        <p class="card-text timestamp"><strong>Timestamp:</strong> ${new Date(
+                                          item.timestamp
+                                        ).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+
+                // Adiciona o card no container
+                container.appendChild(card);
+              });
+            } else {
+              // Caso não haja dados ou a estrutura seja inválida
+              container.innerHTML =
+                '<p class="text-center">Nenhum dado encontrado.</p>';
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar dados da API:", error);
+            const container = document.getElementById("data-container");
+            container.innerHTML =
+              '<p class="text-center text-danger">Erro ao carregar os dados.</p>';
+          });
+      }
+
+      // Carregar os dados assim que a página for carregada
+      window.onload = carregarDados;
+    </script>
+  </body>
+</html>
