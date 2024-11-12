@@ -109,7 +109,10 @@ app.post("/data", async (req: Request, res: Response) => {
 app.get("/data", async (_req: Request, res: Response) => {
   try {
     const data = await SensorData.findAll();
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://thiagoallisson90.github.io/Front/"
+    );
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
