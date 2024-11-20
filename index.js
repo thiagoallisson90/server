@@ -179,7 +179,10 @@ app.get("/data", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.get("/devs", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const devs = yield Devices.findAll();
-        res.status(200).json(devs);
+        const devsWithPdr = devs.map((dev) => {
+            return Object.assign(Object.assign({}, dev.toJSON()), { pdr: (1.0 * dev.rec) / dev.sent });
+        });
+        res.status(200).json(devsWithPdr);
     }
     catch (error) {
         res.status(500).json({ error: "Error retrieving devices" });

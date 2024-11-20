@@ -173,7 +173,13 @@ app.get("/data", async (_req: Request, res: Response) => {
 app.get("/devs", async (_req: Request, res: Response) => {
   try {
     const devs = await Devices.findAll();
-    res.status(200).json(devs);
+    const devsWithPdr = devs.map((dev) => {
+      return {
+        ...dev.toJSON(), // Ensure you're working with plain JSON object
+        pdr: (1.0 * dev.rec) / dev.sent, // Replace with your logic to determine pdr
+      };
+    });
+    res.status(200).json(devsWithPdr);
   } catch (error) {
     res.status(500).json({ error: "Error retrieving devices" });
   }
