@@ -27,8 +27,10 @@ class SensorData extends Model {
   public temperature!: number;
   public humidity!: number;
   public luminosity!: number;
-  public pdr!: number;
+  public pdr?: number;
   public rssi!: number;
+  public lat?: number;
+  public long?: number;
   public timestamp!: Date;
 }
 
@@ -50,13 +52,21 @@ SensorData.init(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    pdr: {
+    rssi: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    rssi: {
+    lat: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    long: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    counter: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     timestamp: {
       type: DataTypes.DATE,
@@ -81,14 +91,14 @@ sequelize
 // Endpoint para receber dados via POST
 //@ts-ignore
 app.post("/data", async (req: Request, res: Response) => {
-  const { device_id, temperature, humidity, luminosity, pdr, rssi } = req.body;
+  let { device_id, temperature, humidity, luminosity, rssi, counter } =
+    req.body;
 
   if (
     !device_id ||
     temperature === undefined ||
     humidity === undefined ||
     luminosity === undefined ||
-    pdr === undefined ||
     rssi === undefined
   ) {
     return res.status(400).json({ error: "Invalid data format" });
@@ -100,7 +110,6 @@ app.post("/data", async (req: Request, res: Response) => {
       temperature,
       humidity,
       luminosity,
-      pdr,
       rssi,
     });
     res
