@@ -188,7 +188,24 @@ app.get("/devs", async (_req: Request, res: Response) => {
 app.get("/devs/:dev_id", async (_req: Request, res: Response) => {
   try {
     const devs = await findDeviceByDeviceId(_req.params.dev_id);
-    res.status(200).json(devs);
+
+    if (devs != null) {
+      const devsWithPdr = Array.isArray(devs)
+        ? devs.map((dev) => ({
+            ...dev.toJSON(),
+            pdr: (1.0 * dev.rec) / dev.sent,
+          }))
+        : [
+            {
+              ...devs.toJSON(),
+              pdr: (1.0 * devs.rec) / devs.sent,
+            },
+          ];
+
+      res.status(200).json(devsWithPdr);
+    } else {
+      res.status(404).json({ error: "Device not found" });
+    }
   } catch (error) {
     res.status(500).json({ error: "Error retrieving devices" });
   }
