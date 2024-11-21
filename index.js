@@ -211,6 +211,7 @@ app.get("/devs/:dev_id", (_req, res) => __awaiter(void 0, void 0, void 0, functi
 //@ts-ignore
 app.post("/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { device_id, temperature, humidity, luminosity, rssi, counter, lat, long, } = req.body;
+    console.log(counter);
     // Validação dos dados de entrada
     if (!device_id ||
         temperature === undefined ||

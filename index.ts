@@ -225,6 +225,8 @@ app.post("/data", async (req: Request, res: Response) => {
     long,
   } = req.body;
 
+  console.log(counter);
+
   // Validação dos dados de entrada
   if (
     !device_id ||
