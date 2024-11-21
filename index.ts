@@ -225,7 +225,7 @@ app.post("/data", async (req: Request, res: Response) => {
     long,
   } = req.body;
 
-  console.log(counter);
+  console.log(`counter=${counter}`);
 
   // Validação dos dados de entrada
   if (
