@@ -247,6 +247,8 @@ app.post("/data", async (req: Request, res: Response) => {
       // Atualiza o valor de rec (incrementa em 1)
       dev.rec += 1;
       dev.sent = counter; // Atualiza o campo 'sent' com o valor do contador
+      if (lat) dev.lat = lat;
+      if (long) dev.long = long;
       await dev.save(); // Salva as mudanças no banco de dados
     } else {
       // Se não existir, cria o dispositivo com rec inicial como 1

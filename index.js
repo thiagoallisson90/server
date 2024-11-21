@@ -228,6 +228,10 @@ app.post("/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             // Atualiza o valor de rec (incrementa em 1)
             dev.rec += 1;
             dev.sent = counter; // Atualiza o campo 'sent' com o valor do contador
+            if (lat)
+                dev.lat = lat;
+            if (long)
+                dev.long = long;
             yield dev.save(); // Salva as mudanças no banco de dados
         }
         else {
