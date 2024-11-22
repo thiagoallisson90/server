@@ -228,10 +228,8 @@ app.post("/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             // Atualiza o valor de rec (incrementa em 1)
             dev.rec += 1;
             dev.sent = counter; // Atualiza o campo 'sent' com o valor do contador
-            if (lat)
-                dev.lat = lat;
-            if (long)
-                dev.long = long;
+            //if (lat) dev.lat = lat;
+            //if (long) dev.long = long;
             yield dev.save(); // Salva as mudanças no banco de dados
         }
         else {
@@ -240,8 +238,8 @@ app.post("/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 name: device_id, // 'name' será o identificador único
                 sent: counter, // Inicializa com o valor do contador
                 rec: 1, // rec começa com 1
-                lat, // Adiciona a latitude
-                long, // Adiciona a longitude
+                //lat, // Adiciona a latitude
+                //long, // Adiciona a longitude
             });
         }
         // Cria os dados do sensor
